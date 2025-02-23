@@ -1,0 +1,58 @@
+package mk.ukim.finki.av3_project.repository;
+
+
+import mk.ukim.finki.av3_project.bootstrap.DataHolder;
+import mk.ukim.finki.av3_project.model.User;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public class LocalUsersRepository {
+
+    //find by username , find by username and password ,save&update ,delete
+
+    /**
+     * This method searches and returns an Optional containing a User object if it is found,
+     * else an empty Optional is returned
+     */
+    public Optional<User> findByUsername(String username){
+        return DataHolder.users.stream()
+                .filter(u -> u.getUsername().equals(username))
+                .findFirst();
+    }
+
+
+    /**
+     * This method searches and returns an Optional containing a User object if it is found,
+     * else an empty Optional is returned
+     */
+    public Optional<User> findByUsernameAndPassword(String username,String password){
+        return DataHolder.users.stream()
+                .filter(u -> u.getUsername().equals(username) && u.getPassword().equals(password))
+                .findFirst();
+    }
+
+
+    /**
+     * This method adds a new user to the memory,but if a user with the same username as the provided user exists,
+     * then the previous user is deleted
+     */
+    public User saveOrUpdate(User user){
+        DataHolder.users.removeIf(prev_u -> prev_u.getUsername().equals(user.getUsername()));
+        DataHolder.users.add(user);
+        return user;
+    }
+
+
+    /**
+     * This method searches and removes if it finds a user with the same username as the provided one
+     */
+    public void deleteUser(String username){
+        DataHolder.users.removeIf(u -> u.getUsername().equals(username));
+    }
+
+
+
+
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Listing</title>
+</head>
+<body>
+<h1 th:text="'Hello '+ ${user_agent}"></h1>
+<h2 th:text="'Accessing by address '+ ${ipAddress}"></h2>
+
+<br>
+<h2>Movie list</h2>
+<ul>
+    <li th:each=" movie : ${movieList}"  th:text="'Movie Name: '+${movie.name}+'  prod Year: '+${movie.year}"></li>
+</ul>
+<form th:action="@{/list}" th:method="POST">
+    <label>
+        Name
+        <input type="text" name="name" />
+    </label>
+
+    <br>
+
+    <label>
+        Description
+        <input type="text" name="year" />
+    </label>
+
+    <br>
+
+    <button type="submit">
+        Add
+    </button>
+</form>
+
+</body>
+</html>
