@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<form th:method="POST" th:action="@{/register}">
+    <label>Name:
+        <input type="text" name="name" >
+    </label><br>
+    <label>Surname:
+        <input type="text" name="surname" >
+    </label><br>
+    <label><b>Username:</b>
+        <input type="text" name="username" >
+    </label><br>
+    <label><b>Password:</b>
+        <input type="text" name="password" >
+    </label><br>
+    <label><b>Repeat Password:</b>
+        <input type="text" name="repeatedPassword" >
+    </label><br>
+    <br>
+    <label>Select Role
+        <select name="Role">
+            <option selected>USER</option>
+            <option>ADMIN</option>
+        </select>
+    </label>
+    <input type="submit" value="Register">
+</form>
+
+
+</body>
+
+<style>
+    body{
+        width: 800px;
+        margin: 50px auto auto auto;
+        align-content: center;
+    }
+    form{
+        border-radius: 5px;
+        border: solid dodgerblue;
+        padding: 10px;
+        width: 350px;
+    }
+    label{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    input[type="text"]{
+        width: 200px;
+    }
+
+</style>
+
+
+</body>
+</html>

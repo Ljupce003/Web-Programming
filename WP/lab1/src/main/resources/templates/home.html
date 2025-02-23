@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<header th:replace="~{/fragments/header}"></header>
+
+
+<h1>Hello this is the Events page</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Event Name</th>
+        <th>Popularity Score</th>
+        <th>Description</th>
+        <th>Location</th>
+        <th>Settings</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="event : ${events}">
+        <td th:text="${event.name}">Event Name</td>
+        <td th:text="${event.popularityScore}">Popularity Score</td>
+        <td th:text="${event.description}">Description</td>
+        <td th:text="${event.location.name}">Location</td>
+        <td>
+            <th:block sec:authorize="hasAnyRole('ROLE_USER','ROLE_ADMIN')">
+            <form th:action="@{/events/details/{id}(id=${event.id})}" method="get">
+                <button type="submit">Details</button>
+            </form>
+            </th:block>
+                <span>     </span>
+            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+            <form th:action="@{/events/edit-form/{id}(id=${event.id})}" method="get">
+                <button type="submit">Edit</button>
+            </form>
+            </th:block>
+
+<!--            <th:block sec:authorize="hasRole('ROLE_ADMIN')">-->
+            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+            <form th:method="post" th:action="@{/events/delete/{id} (id=${event.id})}" style="display:inline;">
+                <button type="submit">Delete</button>
+            </form>
+            </th:block>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<br>
+<th:block sec:authorize="hasRole('ADMIN')">
+    <a href="/events/edit-form">Add New Event</a>
+</th:block>
+
+
+
+<br>
+<br>
+<a href="/book">Go To Event Booking Page</a>
+
+
+<br><br>
+<form th:method="GET" th:action="@{/events}" th:insert="~{fragments/Paging.html:: pageSection(${attr_list},${locations})}">
+
+</form>
+
+<div th:if="${page!=null}">
+    <ul style="list-style: none">
+        <li th:each=" article : ${page.getContent()}"  th:text=" ${article} "></li>
+    </ul>
+</div>
+
+
+
+<!--    <footer th:replace="~{fragments/footer}"></footer>-->
+</body>
+
+<style>
+    table{
+        border-collapse: collapse;
+    }
+    td{
+        border: solid 1px;
+        padding: 10px;
+    }
+    th{
+        border: solid 2px;
+        padding: 6px;
+        background: cornflowerblue;
+    }
+    a[href="/events/edit-form"]{
+        text-align: center;
+        display: block;
+        border: black 1px;
+        background: darkseagreen;
+        width: 120px;
+        padding: 4px;
+        font: message-box;
+        text-decoration: none;
+    }
+    a[href="/book"]{
+        text-align: center;
+        display: block;
+        border: black 1px;
+        background: yellow;
+        width: 120px;
+        padding: 4px;
+        font: message-box;
+        text-decoration: none;
+    }
+    form{
+        display: inline-block;
+    }
+    form[method="post"]{
+        padding-left: 15px;
+    }
+</style>
+</html>

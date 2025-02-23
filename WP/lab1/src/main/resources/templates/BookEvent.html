@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Booking page - Welcome and choose an Event</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{/fragments/header}"></header>
+
+<h1>Welcome to our Event Booking App</h1>
+<main>
+    <h2>Choose an event:</h2>
+
+    <form th:method="POST" th:action="@{/eventBooking}" onsubmit="return checkToBook()">
+    <ul style="list-style: none">
+        <li th:each=" elem : ${list}"> <input type="radio" th:value="${elem.name}" name="radio_b" th:text="' Name: '+${elem.name}+' Description: '+${elem.description}+' Rating: '+${elem.popularityScore}"></li>
+    </ul>
+    <!-- Display radio buttons for each event,
+            the value should be the event name
+            and the displayed text should be Name: <event_name>, Description: <event_description>, Rating: <popularity_score> -->
+
+    <h2>Choose number of tickets:</h2>
+    <input type="number" name="numTickets" min="1" max="10" id="ticket_select"><br/>
+    <br/>
+
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <form th:method="POST" th:action="@{/book/upload}">
+        <input type="file" name="my_file">
+
+        <input type="submit" value="Upload">
+    </form>
+
+
+    <br><br>
+    <form th:method="POST" th:action="@{/book}" onsubmit="return check()">
+        <label>Insert Text
+            <input type="text" name="text" id="text1">
+        </label>
+        <label>Insert rating
+            <input type="text" name="rating" id="text2">
+        </label>
+
+        <input type="submit" value="Submit" >
+    </form>
+
+    <div th:if="${list_available}">
+        <ul style="list-style: none">
+            <li th:each=" article : ${results}"  th:text="' Name: '+${article.name}+' Rating: '+${article.popularityScore}"></li>
+        </ul>
+    </div>
+
+
+    <div th:if="${intError!=null}">
+        <p style="color: red" th:text="${intError}"></p>
+    </div>
+
+
+    <div th:if="${sess_id!=null}">
+        <div th:text="'ID: '+${sess_id}"></div>
+        <div th:text="'TIME: '+${sess_t}"></div>
+    </div>
+
+
+    <br><br><br>
+    <a href="/events">Go To Events Page</a>
+
+
+</main>
+<script>
+    function check() {
+        let text = document.getElementById('text1').value.trim();
+        let rating = document.getElementById('text2').value.trim();
+
+
+        if (text === "" || rating === "") {
+            alert("Please fill both field to filter .");
+            return false;
+        }
+        return true;
+    }
+
+
+    function checkToBook() {
+        let text = document.getElementById('ticket_select').value.trim();
+        let radios =document.getElementsByName("radio_b");
+        let good=false;
+
+        for (let i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                good = true;
+                break;
+            }
+        }
+
+        if (text === "" || !good) {
+            alert("Please make your selection");
+            return false;
+        }
+        return true;
+    }
+</script>
+
+</body>
+<style>
+    a[href="/events"]{
+        text-align: center;
+        display: block;
+        border: black 1px;
+        background: yellow;
+        width: 120px;
+        padding: 4px;
+        font: message-box;
+        text-decoration: none;
+    }
+
+</style>
+</html>
